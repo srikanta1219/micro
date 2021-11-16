@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-svc
+  labels:
+    app: home
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: home
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: about-svc
+  labels:
+    app: about
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8081
+  selector:
+    app: about
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contact-svc
+  labels:
+    app: contact
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8082
+  selector:
+    app: contact
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-home
+  labels:
+    app: home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home
+  template:
+    metadata:
+      labels:
+        app: home
+    spec:
+      containers:
+      - name: container-home
+        image: srikanta1219/myapp_micro1:latest
+        env:
+          - name: about
+            value: "http://about-svc:8081"
+          - name: contact
+            value: "http://contact-svc:8082"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-about
+  labels:
+    app: about
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: about
+  template:
+    metadata:
+      labels:
+        app: about
+    spec:
+      containers:
+      - name: container-about
+        image: srikanta1219/myapp_micro2:latest
+        ports:
+        - containerPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-contact
+  labels:
+    app: contact
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contact
+  template:
+    metadata:
+      labels:
+        app: contact
+    spec:
+      containers:
+      - name: container-contact
+        image: srikanta1219/myapp_micro3:latest
+        ports:
+        - containerPort: 8082
+        
