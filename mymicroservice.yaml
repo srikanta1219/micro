@@ -8,7 +8,7 @@ spec:
   #type: LoadBalancer
   type: NodePort
   ports:
-  - port: 8080
+  - port: 80
   selector:
     app: home
 ---
@@ -22,7 +22,7 @@ spec:
   #type: LoadBalancer
   type: NodePort
   ports:
-  - port: 8081
+  - port: 80
   selector:
     app: about
 ---
@@ -36,7 +36,7 @@ spec:
   #type: LoadBalancer
   type: NodePort
   ports:
-  - port: 8082
+  - port: 80
   selector:
     app: contact
 ---
@@ -66,7 +66,7 @@ spec:
           - name: contact
             value: "http://contact-svc:8082"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -88,7 +88,7 @@ spec:
       - name: container-about
         image: srikanta1219/myapp_micro2:latest
         ports:
-        - containerPort: 8081
+        - containerPort: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -110,5 +110,5 @@ spec:
       - name: container-contact
         image: srikanta1219/myapp_micro3:latest
         ports:
-        - containerPort: 8082
+        - containerPort: 80
         
