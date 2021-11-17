@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-micro3
+  labels:
+    app: micro3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro3
+  template:
+    metadata:
+      labels:
+        app: micro3
+    spec:
+      containers:
+      - name: container-micro3
+        image: srikanta1219/myapp_micro3:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro3-svc
+  labels:
+    app: micro3
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8081
+  - nodePort: 9090
+  selector:
+    app: micro3
